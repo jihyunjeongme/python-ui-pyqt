@@ -19,22 +19,40 @@ class MyApp(QWidget):
         self.btn1 = QPushButton("&Like", self)
 
         self.lbl1 = QLabel("ID", self)
-        self.lbl1.move(40, 99)
+        self.lbl1.move(30, 40)
 
         self.lbl2 = QLabel("PW", self)
-        self.lbl2.move(40, 129)
+        self.lbl2.move(30, 70)
+
+        self.lbl3 = QLabel("Tag1", self)
+        self.lbl3.move(30, 100)
+
+        self.lbl4 = QLabel("Tag2", self)
+        self.lbl4.move(30, 130)
+
+        self.lbl5 = QLabel("Tag3", self)
+        self.lbl5.move(30, 160)
 
         self.qle1 = QLineEdit(self)
-        self.qle1.move(80, 100)
+        self.qle1.move(80, 40)
 
         self.qle2 = QLineEdit(self)
         self.qle2.setEchoMode(QLineEdit.Password)
 
-        self.qle2.move(80, 130)
+        self.qle2.move(80, 70)
+
+        self.qle3 = QLineEdit(self)
+        self.qle3.move(80, 100)
+
+        self.qle4 = QLineEdit(self)
+        self.qle4.move(80, 130)
+
+        self.qle5 = QLineEdit(self)
+        self.qle5.move(80, 160)
 
         self.setWindowTitle("Instagram Auto Program")
         # x, y, width, height
-        self.setGeometry(800, 400, 300, 300)
+        self.setGeometry(800, 400, 300, 230)
         self.show()
 
         # 버튼에 기능을 할당하는 코드
@@ -67,14 +85,20 @@ class MyApp(QWidget):
         id = self.qle1.text()
         password = self.qle2.text()
 
-        timeline_like_count = 120
+        # timeline_like_count = 120
 
         # hash_tags : 좋아요할 전체 해시태그 리스트
         # important_hash_tags : 중요해서 더 많이 like할 해시태그 리스트
 
-        important_hash_tags = ["수요일", "카페", "퇴근"]
+        # important_hash_tags = ["토요일", "카페", "불금"]
+
+        # important_hash_tags_count = 200
+        # hash_tags = ["", "카페", "불금"]
+        # hash_tags_count = 600
+
+        important_hash_tags = [self.qle3.text(), self.qle4.text(), self.qle5.text()]
         important_hash_tags_count = 200
-        hash_tags = ["수요일", "카페", "퇴근"]
+        hash_tags = [self.qle3.text(), self.qle4.text(), self.qle5.text()]
         hash_tags_count = 600
 
         # ======== 3. InstaJob Class ======
@@ -114,6 +138,70 @@ class MyApp(QWidget):
         time.sleep(1)
         password_input.submit()
         time.sleep(2)
+
+        browser.execute_script("window.scrollTo(0, document.body.scrollHeight);")
+
+        try:
+            for i in range(timeline_like_count):
+                time.sleep(1.5)
+
+                browser.find_elements_by_css_selector(
+                    "span.fr66n > button > span"
+                    # "span.glyphsSpriteHeart__outline__24__grey_9.Szr5J"
+                )[0].click()
+
+                time.sleep(1.5)
+
+        except Exception as e:
+            print("Error! ", e)
+            # slacker.chat.post_message("#general", text="raise timeline like error")
+            pass
+
+        for hash_tag in hash_tags:
+            try:
+                print(hash_tag + " 좋아요 작업을 시작합니다")
+                browser.get("https://www.instagram.com/explore/tags/" + quote(hash_tag))
+                time.sleep(5 + random.random() * 1.2)
+                element = browser.find_elements_by_css_selector("div._9AhH0")[9]
+                element.click()
+                time.sleep(5)
+
+                if any(e in hash_tag for e in important_hash_tags):
+                    count_number = important_hash_tags_count
+                else:
+                    count_number = hash_tags_count
+
+                for i in range(1, count_number):
+                    try:
+                        # 좋아요 해쉬태그 지정
+                        like = browser.find_element_by_css_selector(
+                            "span.fr66n > button > span"
+                            # "span.glyphsSpriteHeart__outline__24__grey_9.Szr5J"
+                        )
+                        # 좋아요 해쉬태그 클릭
+                        like.click()
+
+                        # 다음 포스팅으로 넘어가기전 대기
+                        time.sleep(2 + random.random() * 1.2)
+
+                        # 다음 포스팅으로 넘어감
+                        browser.find_element_by_css_selector(
+                            "span.glyphsSpriteHeart__outline__24__grey_9.Szr5J"
+                        ).click()
+
+                        time.sleep(3.2 + random.random() * 1.3)
+                    except:
+                        browser.find_element_by_css_selector(
+                            "a.HBoOv.coreSpriteRightPaginationArrow"
+                        ).click()
+                        time.sleep(1 + random.random() * 1.2)
+
+            except NoSuchElementException as e:
+                print("NoSuch Error", e)
+                pass
+
+            except Exception as e:
+                print("Error! ", e)
 
 
 if __name__ == "__main__":

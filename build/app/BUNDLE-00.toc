@@ -1,0 +1,3 @@
+([('app',
+   '/Users/jihyun/Documents/GitHub/python-ui-pyqt/dist/app',
+   'EXECUTABLE')],)
