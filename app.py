@@ -105,7 +105,8 @@ class MyApp(QWidget):
         print("browser loading..")
         global browser
         browser = webdriver.Chrome(
-            "/Users/jihyun/Documents/GitHub/instagram-auto-like-with-Python/chromedriver_74",
+            # "/Users/jihyun/Documents/GitHub/instagram-auto-like-with-Python/chromedriver_74",
+            sys.path[1] + "/chromedriver_74",
             chrome_options=self.options,
         )
 
