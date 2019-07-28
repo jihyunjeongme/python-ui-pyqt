@@ -1,0 +1,5 @@
+{
+    "python.pythonPath": "/Users/jihyun/miniconda3/envs/python_ui/bin/python",
+    "python.linting.pylintEnabled": true,
+    "python.formatting.provider": "yapf"
+}
